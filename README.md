@@ -2,7 +2,7 @@
 
 PostgreSQL, MySQL, MongoDB, SQLite, DuckDB에 동일한 50,000개 합성 레코드를 적재하고 저장 정확도, 쓰기 처리량, 읽기 지연을 비교합니다.
 
-[GitHub Actions 실행 기록](../../actions/workflows/benchmark.yml)에서 동일 러너에서 실행한 엔진별 요약과 원본 JSON·전체 JSONL을 내려받을 수 있습니다. [결과 디렉터리](results/)에는 검증한 실행 기록을 보관합니다.
+[GitHub Actions 실행 기록](../../actions/workflows/benchmark.yml)에서 동일 러너에서 실행한 엔진별 요약과 원본 JSON·전체 JSONL을 내려받을 수 있습니다. [5개 엔진 비교 결과](results/github-actions-2026-11-11.md)와 [측정 JSON](results/github-actions-2026-11-11.json)은 저장소에 보관합니다. 전체 합성 데이터 JSONL은 해당 실행의 아티팩트에 포함되며, 만료 후에도 같은 시드로 재생성할 수 있습니다.
 
 ## 재현
 
