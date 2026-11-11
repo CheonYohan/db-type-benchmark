@@ -1,0 +1,392 @@
+{
+  "rows": 50000,
+  "seed": 20261111,
+  "batch": 1000,
+  "repeats": 25,
+  "points_per_round": 60,
+  "warmups": 3,
+  "dataset_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.16",
+    "visible_logical_cpus": 4,
+    "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C"
+  },
+  "query_expected": {
+    "date_range_sum": [
+      2060,
+      "-64263.5210"
+    ],
+    "decimal_range": 1238,
+    "text_prefix": 1550,
+    "json_nested_filter": 3163,
+    "timestamp_range": 195,
+    "time_range": 1067,
+    "boolean_integer_filter": 2566,
+    "float_range": 104,
+    "uuid_equality": 1,
+    "binary_equality": 1,
+    "null_filter": 7142
+  },
+  "engine_order": [
+    "sqlite",
+    "duckdb",
+    "postgresql",
+    "mysql",
+    "mongodb"
+  ],
+  "engines": {
+    "sqlite": {
+      "version": "3.37.2",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 0.911011,
+      "rows_per_second": 54884.06,
+      "index_and_statistics_seconds": 0.110387,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.008879,
+          "p95_ms": 0.012953
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 2.458555,
+          "p95_ms": 2.78678
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 0.06655,
+          "p95_ms": 0.082048
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 6.794572,
+          "p95_ms": 7.122013
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 31.5169,
+          "p95_ms": 34.074532
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 6.846454,
+          "p95_ms": 7.092585
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 7.00161,
+          "p95_ms": 7.189872
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 6.314661,
+          "p95_ms": 6.475585
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 6.031388,
+          "p95_ms": 6.244395
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.03543,
+          "p95_ms": 0.048245
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 6.105787,
+          "p95_ms": 6.285484
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 5.980531,
+          "p95_ms": 6.186371
+        }
+      }
+    },
+    "duckdb": {
+      "version": "v1.4.4",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 69.11743,
+      "rows_per_second": 723.41,
+      "index_and_statistics_seconds": 0.575049,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.554768,
+          "p95_ms": 0.681217
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 0.91789,
+          "p95_ms": 1.080023
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 0.804418,
+          "p95_ms": 1.048046
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 2.112242,
+          "p95_ms": 2.21563
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 9.264751,
+          "p95_ms": 10.309431
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 0.756958,
+          "p95_ms": 0.963184
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 0.730851,
+          "p95_ms": 0.847808
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 0.758454,
+          "p95_ms": 0.93451
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 1.355708,
+          "p95_ms": 1.553702
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.490453,
+          "p95_ms": 0.644754
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 0.763317,
+          "p95_ms": 1.113835
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 0.713254,
+          "p95_ms": 0.914582
+        }
+      }
+    },
+    "postgresql": {
+      "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 2.526986,
+      "rows_per_second": 19786.42,
+      "index_and_statistics_seconds": 0.810283,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.211185,
+          "p95_ms": 0.332476
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 1.640447,
+          "p95_ms": 1.750475
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 1.17989,
+          "p95_ms": 1.284344
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 6.097541,
+          "p95_ms": 7.007924
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 11.955764,
+          "p95_ms": 12.390226
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 7.066629,
+          "p95_ms": 7.369947
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 7.269587,
+          "p95_ms": 7.859222
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 7.022404,
+          "p95_ms": 7.604372
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 5.294802,
+          "p95_ms": 5.545973
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.286972,
+          "p95_ms": 0.366214
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 7.183154,
+          "p95_ms": 7.53091
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 6.733681,
+          "p95_ms": 7.012072
+        }
+      }
+    },
+    "mysql": {
+      "version": "8.4.13",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 3.086085,
+      "rows_per_second": 16201.76,
+      "index_and_statistics_seconds": 0.356306,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.281471,
+          "p95_ms": 0.481295
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 4.496902,
+          "p95_ms": 5.706796
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 0.585114,
+          "p95_ms": 0.899833
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 16.10419,
+          "p95_ms": 17.807955
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 23.700667,
+          "p95_ms": 28.439068
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 7.844527,
+          "p95_ms": 8.660678
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 8.051401,
+          "p95_ms": 9.189509
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 8.101448,
+          "p95_ms": 8.49059
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 7.246812,
+          "p95_ms": 7.469115
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.322869,
+          "p95_ms": 0.4845
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 14.969714,
+          "p95_ms": 15.734707
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 14.156113,
+          "p95_ms": 17.561466
+        }
+      }
+    },
+    "mongodb": {
+      "version": "8.0.34",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 1.289546,
+      "rows_per_second": 38773.33,
+      "index_and_statistics_seconds": 0.256228,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.315709,
+          "p95_ms": 0.559359
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 4.107466,
+          "p95_ms": 6.187169
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 1.213335,
+          "p95_ms": 1.380635
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 31.690023,
+          "p95_ms": 42.389683
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 13.523529,
+          "p95_ms": 15.689939
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 12.462667,
+          "p95_ms": 14.457487
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 13.652584,
+          "p95_ms": 16.133222
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 15.27201,
+          "p95_ms": 16.571512
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 11.916632,
+          "p95_ms": 16.318909
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.954739,
+          "p95_ms": 1.128604
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 13.232064,
+          "p95_ms": 14.545033
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 13.580003,
+          "p95_ms": 14.812245
+        }
+      }
+    }
+  },
+  "errors": {}
+}
