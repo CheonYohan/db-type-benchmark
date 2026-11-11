@@ -1,0 +1,3 @@
+services:
+  mongo:
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
