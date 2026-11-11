@@ -1,0 +1,68 @@
+name: Concurrent order benchmark
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/oltp.yml
+      - oltp_bench.py
+      - oltp_engines.py
+      - compose.oltp.yaml
+      - compose.yaml
+      - requirements.txt
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    # MongoDB 8.0 requires a runner kernel compatible with its allocator.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    env:
+      COMPOSE_FILE: compose.yaml:compose.oltp.yaml
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install DB clients
+        run: python -m pip install -r requirements.txt
+      - name: Start DBs and initialize MongoDB replica set
+        run: |
+          docker compose up -d --wait --wait-timeout 180
+          docker compose exec -T mongo mongosh --quiet --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"localhost:27017"}]})'
+          for attempt in {1..30}; do
+            if docker compose exec -T mongo mongosh --quiet --eval 'quit(db.hello().isWritablePrimary ? 0 : 1)'; then
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: Verify joins and transaction rollback on a small fixture
+        run: python oltp_bench.py --orders 1000 --requests 80 --clients 1 4 --trials 1 --output results/oltp-smoke.json
+      - name: Measure 50,000-order workloads
+        run: python oltp_bench.py --output results/oltp.json
+      - name: Publish measurements
+        if: always()
+        run: |
+          if [ -f results/oltp.json ]; then
+            echo OLTP_REPORT_BEGIN
+            cat results/oltp.json
+            echo OLTP_REPORT_END
+            cat results/oltp.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: order-benchmark
+          path: |
+            results/oltp.json
+            results/oltp.md
+      - name: Collect server diagnostics on failure
+        if: failure()
+        run: docker compose logs --tail 100
+      - name: Stop database servers
+        if: always()
+        run: docker compose down --volumes
