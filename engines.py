@@ -143,6 +143,9 @@ class Sql:
         for field in INDEX_FIELDS:
             self.cursor.execute(f"CREATE INDEX {self.table}_{field} ON {self.table} ({field})")
         self.connection.commit()
+        self.analyze()
+
+    def analyze(self):
         if self.name in ("postgresql", "sqlite", "duckdb"):
             self.cursor.execute(f"ANALYZE {self.table}")
         if self.name == "mysql":
@@ -160,7 +163,7 @@ class Sql:
         self.cursor.execute(f"SELECT * FROM {self.table} WHERE id = {self.placeholder}", (identifier,))
         return self.cursor.fetchone()
 
-    def filter(self, conditions, sum_amount=False):
+    def filter_statement(self, conditions, sum_amount):
         clauses, values = [], []
         for field, operator, value in conditions:
             column = JSON_SEGMENT[self.name] if field == "segment" else field
@@ -174,7 +177,11 @@ class Sql:
             clauses.append(f"{column} {operator} {self.placeholder}")
             values.append(self.value(field, value))
         select = "COUNT(*), COALESCE(SUM(amount), 0)" if sum_amount else "COUNT(*)"
-        self.cursor.execute(f"SELECT {select} FROM {self.table} WHERE {' AND '.join(clauses)}", tuple(values))
+        return f"SELECT {select} FROM {self.table} WHERE {' AND '.join(clauses)}", tuple(values)
+
+    def filter(self, conditions, sum_amount=False):
+        statement, values = self.filter_statement(conditions, sum_amount)
+        self.cursor.execute(statement, values)
         result = self.cursor.fetchone()
         if not sum_amount:
             return int(result[0])
@@ -246,7 +253,7 @@ class Mongo:
     def point(self, identifier):
         return self.collection.find_one({"_id": identifier})
 
-    def filter(self, conditions, sum_amount=False):
+    def filter_query(self, conditions):
         operators = {"=": "$eq", ">=": "$gte", "<": "$lt", "prefix": "$regex", "null": "$type"}
         query = {}
         for field, operator, value in conditions:
@@ -258,6 +265,10 @@ class Mongo:
             else:
                 value = self.value(field, value)
             query.setdefault(key, {})[operators[operator]] = value
+        return query
+
+    def filter(self, conditions, sum_amount=False):
+        query = self.filter_query(conditions)
         if not sum_amount:
             return self.collection.count_documents(query)
         pipeline = [{"$match": query}, {"$group": {"_id": None, "count": {"$sum": 1}, "amount": {"$sum": "$amount"}}}]
