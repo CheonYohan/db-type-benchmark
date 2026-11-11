@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: bench
+      POSTGRES_PASSWORD: bench
+      POSTGRES_DB: bench
+    ports:
+      - "127.0.0.1:55432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "bench", "-d", "bench"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: bench-root
+      MYSQL_USER: bench
+      MYSQL_PASSWORD: bench
+      MYSQL_DATABASE: bench
+    ports:
+      - "127.0.0.1:53306:3306"
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "127.0.0.1", "-ubench", "-pbench", "bench", "-e", "SELECT 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+  mongo:
+    image: mongo:8.0
+    ports:
+      - "127.0.0.1:57017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "quit(db.adminCommand({ping: 1}).ok === 1 ? 0 : 1)"]
+      interval: 3s
+      timeout: 5s
+      retries: 40

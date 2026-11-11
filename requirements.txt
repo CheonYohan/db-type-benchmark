@@ -1,0 +1,4 @@
+duckdb==1.4.4
+psycopg[binary]==3.2.13
+PyMySQL[rsa]==1.1.2
+pymongo==4.16.0

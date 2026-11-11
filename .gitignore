@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+scratch/
+results/latest.*
+results/dataset.jsonl
+*.db
+*.db-wal
+*.db-shm

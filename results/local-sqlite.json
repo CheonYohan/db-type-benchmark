@@ -1,0 +1,108 @@
+{
+  "rows": 50000,
+  "seed": 20261111,
+  "batch": 1000,
+  "repeats": 25,
+  "points_per_round": 60,
+  "warmups": 3,
+  "dataset_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.14",
+    "visible_logical_cpus": 9,
+    "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C"
+  },
+  "query_expected": {
+    "date_range_sum": [
+      2060,
+      "-64263.5210"
+    ],
+    "decimal_range": 1238,
+    "text_prefix": 1550,
+    "json_nested_filter": 3163,
+    "timestamp_range": 195,
+    "time_range": 1067,
+    "boolean_integer_filter": 2566,
+    "float_range": 104,
+    "uuid_equality": 1,
+    "binary_equality": 1,
+    "null_filter": 7142
+  },
+  "engine_order": [
+    "sqlite"
+  ],
+  "engines": {
+    "sqlite": {
+      "version": "3.53.1",
+      "verified_rows": 50000,
+      "verified_sha256": "7848c807db9fc685185810641f83ddbcfe13c531a79452a36e60b624ff0a489c",
+      "load_seconds": 0.655877,
+      "rows_per_second": 76233.81,
+      "index_and_statistics_seconds": 0.109296,
+      "operations": {
+        "point_full_row": {
+          "samples": 1500,
+          "p50_ms": 0.006065,
+          "p95_ms": 0.011058
+        },
+        "date_range_sum": {
+          "samples": 25,
+          "p50_ms": 2.956247,
+          "p95_ms": 4.600561
+        },
+        "decimal_range": {
+          "samples": 25,
+          "p50_ms": 0.056864,
+          "p95_ms": 0.091911
+        },
+        "text_prefix": {
+          "samples": 25,
+          "p50_ms": 6.630559,
+          "p95_ms": 10.869955
+        },
+        "json_nested_filter": {
+          "samples": 25,
+          "p50_ms": 33.764045,
+          "p95_ms": 42.438951
+        },
+        "timestamp_range": {
+          "samples": 25,
+          "p50_ms": 7.196512,
+          "p95_ms": 10.849828
+        },
+        "time_range": {
+          "samples": 25,
+          "p50_ms": 7.056134,
+          "p95_ms": 11.56051
+        },
+        "boolean_integer_filter": {
+          "samples": 25,
+          "p50_ms": 6.139149,
+          "p95_ms": 8.754602
+        },
+        "float_range": {
+          "samples": 25,
+          "p50_ms": 6.522409,
+          "p95_ms": 9.350383
+        },
+        "uuid_equality": {
+          "samples": 25,
+          "p50_ms": 0.028889,
+          "p95_ms": 0.234152
+        },
+        "binary_equality": {
+          "samples": 25,
+          "p50_ms": 6.409602,
+          "p95_ms": 9.913967
+        },
+        "null_filter": {
+          "samples": 25,
+          "p50_ms": 6.163683,
+          "p95_ms": 8.612774
+        }
+      }
+    }
+  },
+  "errors": {}
+}
