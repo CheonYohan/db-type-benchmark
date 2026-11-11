@@ -4,6 +4,8 @@
 
 [성공한 GitHub Actions 실행](https://github.com/CheonYohan/db-type-benchmark/actions/runs/42964370408) · [측정 JSON과 실행 계획](results/crud-2026-11-11.json)
 
+[후속 실험 · 동시 조인과 주문 확정 트랜잭션](results/oltp-2026-11-11.md)
+
 ## 초록
 
 같은 합성 데이터 50,000행의 삽입·읽기·수정·삭제를 기본키만 둔 조건과 보조 인덱스 세 개를 둔 조건에서 비교했다. 엔진당 각 조건을 세 번씩 실행하고, 초기 데이터와 수정된 데이터의 SHA-256 및 삭제 후 잔여 행 수를 확인했다. 보조 인덱스 조건에서 배치 삽입은 SQLite, 정렬 전체 읽기는 DuckDB가 가장 짧았다. 서버형 엔진 중 배치 삽입은 MongoDB가 가장 짧았다. 인덱스에 의한 조회 개선 폭과 쓰기 시간 변화는 엔진과 작업에 따라 달랐다.
@@ -321,3 +323,19 @@ python3 crud_bench.py --engines sqlite --output results/latest-crud.json
 - [이전 적재·조회 실험](results/github-actions-2026-11-11.md) · [합성 데이터 전체 JSONL](https://github.com/CheonYohan/db-type-benchmark/actions/runs/42950079690#artifacts). 아티팩트 보관 기간 이후에도 같은 시드로 재생성할 수 있다.
 
 실험 코드 커밋 [`51f0942`](https://github.com/CheonYohan/db-type-benchmark/tree/51f0942dc2669ee2015390ab6ebb71824d9c81af)
+
+## 9. 후속 실험 · 동시 조인과 주문 확정 트랜잭션
+
+주문 50,000건과 주문 항목 100,000건에서 PostgreSQL, MySQL, MongoDB의 조인 조회와 주문 확정 트랜잭션을 비교했다. 동시 접속 1·4·16개에서 조회 전용, 확정 전용, 조회 70%·확정 30% 혼합 부하를 각 3회 실행했다. **81회, 48,600개 논리 요청**을 완료했고 의도적 롤백 1,053건을 포함해 재고·주문 상태·영수증이 예상값과 일치했다.
+
+**동시 접속 16개**
+
+| DB | 조인 요청/초 | 주문 커밋/초 | 성공 커밋 p95 (ms) | 혼합 요청/초 | 혼합 전체 p95 (ms) |
+|---|---:|---:|---:|---:|---:|
+| PostgreSQL | 3,448 | 743 | 74.47 | 1,710 | 35.39 |
+| MySQL | 2,086 | 588 | 55.03 | 1,140 | 42.33 |
+| MongoDB | 1,740 | 121 | 490.83 | 389 | 184.61 |
+
+주문 확정 전용 부하에서 PostgreSQL의 커밋 처리량이 가장 높았고 MySQL의 성공 커밋 p95가 가장 낮았다. 혼합 부하에서는 PostgreSQL이 처리량과 전체 p95에서 앞섰다. 이 실험은 정규화 모델과 일부 상품에 재고 경합이 집중된 조건을 사용했다.
+
+[전체 실험 보고서와 1·4·16개 접속 결과](results/oltp-2026-11-11.md) · [측정 JSON](results/oltp-2026-11-11.json) · [GitHub Actions 실행](https://github.com/CheonYohan/db-type-benchmark/actions/runs/42969847891)
