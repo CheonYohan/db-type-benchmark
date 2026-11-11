@@ -64,6 +64,16 @@ class CrudSql(Sql):
             raise
 
     def insert_batch(self, rows):
+        if self.name == "duckdb":
+            # Bind one list per column to keep SQL parsing independent of the batch size.
+            columns = [
+                [self.value(field, value) for value in column]
+                for field, column in zip(FIELDS, zip(*rows, strict=True), strict=True)
+            ]
+            select = ", ".join("unnest(?)" for _ in FIELDS)
+            with self.write_transaction():
+                self.cursor.execute(f"INSERT INTO {self.table} SELECT {select}", columns)
+            return
         row_marks = f"({placeholders(self.placeholder, len(FIELDS))})"
         max_rows = self.parameter_limit // len(FIELDS)
         with self.write_transaction():
@@ -91,6 +101,9 @@ class CrudSql(Sql):
 
     def write_by_id(self, prefix, ids, values=()):
         with self.write_transaction():
+            if self.name == "duckdb":
+                self.cursor.execute(f"{prefix} WHERE id IN (SELECT unnest(?))", (*values, ids))
+                return
             for group in chunks(ids, self.parameter_limit - len(values)):
                 markers = placeholders(self.placeholder, len(group))
                 self.cursor.execute(f"{prefix} WHERE id IN ({markers})", (*values, *group))
