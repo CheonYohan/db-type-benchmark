@@ -14,7 +14,8 @@ permissions:
   contents: read
 jobs:
   benchmark:
-    runs-on: ubuntu-24.04
+    # MongoDB 8.0 requires a runner kernel compatible with its allocator.
+    runs-on: ubuntu-22.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
