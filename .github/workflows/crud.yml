@@ -1,0 +1,58 @@
+name: CRUD and secondary-index benchmark
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/crud.yml
+      - crud_bench.py
+      - crud_engines.py
+      - engines.py
+      - bench.py
+      - dataset.py
+      - compose.yaml
+      - requirements.txt
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    # MongoDB 8.0 requires a runner kernel compatible with its allocator.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install DB clients
+        run: python -m pip install -r requirements.txt
+      - name: Start database servers
+        run: docker compose up -d --wait --wait-timeout 180
+      - name: Measure and verify
+        run: python crud_bench.py --output results/crud.json
+      - name: Publish measurements
+        if: always()
+        shell: bash
+        run: |
+          if [ -f results/crud.json ]; then
+            echo CRUD_REPORT_BEGIN
+            cat results/crud.json
+            echo CRUD_REPORT_END
+            cat results/crud.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crud-benchmark
+          path: |
+            results/crud.json
+            results/crud.md
+      - name: Collect server diagnostics on failure
+        if: failure()
+        run: docker compose logs --tail 100
+      - name: Stop database servers
+        if: always()
+        run: docker compose down --volumes
